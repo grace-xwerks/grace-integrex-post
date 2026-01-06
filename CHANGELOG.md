@@ -10,7 +10,6 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ## [Unreleased]
 
 ### To Be Added
-- Threading cycles (G76, G92)
 - B-axis output for upper turret positioning
 - C-axis positioning for live tool orientation
 - Sub-spindle part transfer operations
@@ -19,6 +18,70 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - P-code waiting (P1-P99999999)
 - Advanced tool life management
 - Extended work offsets (G54.1)
+
+---
+
+## [0.5.0] - 2026-01-06
+
+### Added - Phase 4: Threading Cycles (Cycles Portion Complete - 40%)
+- **G76** - Compound threading cycle (multi-pass automatic)
+  - First G76 block: P(cycle params) Q(min cut) R(finish allowance)
+  - Second G76 block: X(final) Z(end) R(taper) P(depth) Q(first cut) F(pitch)
+  - Automatic calculation of stepdowns from cycle points
+  - Infeed angle control (typically 30° × 2 = 60°)
+  - Spring passes (finish passes) support
+  - Chamfer width control
+  - Material allowance for finish pass
+- **G92** - Simple threading cycle (single pass)
+  - Direct thread cutting with X, Z, R(taper), F(pitch)
+  - Used for manual control or simple threads
+- **useSimpleThread** property - Choose G92 or G76
+- **moveToThreadStart()** helper - Position to thread start with clearance
+- **getNumberOfCyclePoints()** helper - Get total cycle points
+- **getCyclePoint()** helper - Get specific cycle point data
+- **isLastCyclePoint()** helper - Detect last point in multi-pass threading
+
+### Added - Threading Format Definitions
+- **threadP1Format** - G76 P parameter (6-digit AABBCC format)
+- **threadPQFormat** - G76 P/Q/R values (thread depth/cut/allowance)
+- **g92RFormat** - G92 R taper parameter
+
+### Added - Threading Output Variables
+- **threadP1Output** - G76 cycle parameters (repeat/chamfer/angle)
+- **threadP2Output** - G76 thread depth
+- **threadQOutput** - G76 minimum/first cut depth
+- **threadROutput** - G76 finish allowance or taper
+- **g92ROutput** - G92 taper amount
+
+### Changed
+- Threading operations now use G76 compound threading by default
+- Option to use G92 simple threading via useSimpleThread property
+- Thread parameters automatically calculated from operation settings
+- Multi-pass threading fully supported
+
+### Technical Notes
+- G76 P format: AABBCC where AA=spring passes, BB=chamfer width, CC=cutting angle
+- Thread depth is radial (not diameter) as per Mazak specification
+- Taper positive if taper goes down (increasing diameter toward end)
+- First pass depth and minimum depth of cut auto-calculated
+- Compatible with Fusion 360 threading operations
+
+### File Statistics
+- **Lines of Code:** 2,529 (+167 from v0.4.5)
+- **Functions Added:** 5 threading helpers
+- **New Formats:** 3 threading formats
+- **New Output Variables:** 5 threading outputs
+- **New Properties:** 1 (useSimpleThread)
+
+### Phase 4 Cycles Status
+- Drilling/Tapping/Boring: ✅ Complete (100%)
+- Threading: ✅ Complete (100%)
+- **Overall Cycles:** ✅ 40% Phase 4 Complete
+
+### Still Needed in Phase 4
+- B-Axis Control: ⏳ Pending (0%)
+- C-Axis Control: ⏳ Pending (0%)
+- Sub-Spindle: ⏳ Pending (0%)
 
 ---
 

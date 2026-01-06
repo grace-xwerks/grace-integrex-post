@@ -1,9 +1,9 @@
 # Grace Engineering - Mazak Integrex 100-IV ST Dual Turret Post Processor
 
 [![License](https://img.shields.io/badge/License-Proprietary-red.svg)](LICENSE)
-[![Version](https://img.shields.io/badge/Version-0.4.5-blue.svg)](CHANGELOG.md)
+[![Version](https://img.shields.io/badge/Version-0.5.0-blue.svg)](CHANGELOG.md)
 [![Status](https://img.shields.io/badge/Status-Development-yellow.svg)](DEVELOPMENT_STATUS.md)
-[![Phase](https://img.shields.io/badge/Phase-4%20(20%25)-orange.svg)](DEVELOPMENT_STATUS.md)
+[![Phase](https://img.shields.io/badge/Phase-4%20(40%25)-orange.svg)](DEVELOPMENT_STATUS.md)
 
 A custom Autodesk Fusion 360 post processor for the Mazak Integrex 100-IV ST dual turret mill-turn machine with Matrix (Nexus) control.
 
@@ -28,9 +28,10 @@ This post processor is specifically designed for:
 - ✅ Sub-spindle support
 - ✅ Diameter mode for turning operations
 - ✅ Complete motion control (G0, G1, G2, G3)
-- ✅ **Drilling cycles (G81-G89)** - NEW in v0.4.5!
-- ✅ **Tapping cycles (G74/G84)** - NEW in v0.4.5!
-- ✅ **Boring cycles (G85-G89)** - NEW in v0.4.5!
+- ✅ **Drilling cycles (G81-G89)**
+- ✅ **Tapping cycles (G74/G84)**
+- ✅ **Boring cycles (G85-G89)**
+- ✅ **Threading cycles (G76/G92)** - NEW in v0.5.0!
 - ✅ Milling and turning operations
 - ✅ Work offset management (G54-G59)
 - ✅ Spindle speed limiting per spindle type
@@ -204,8 +205,8 @@ M30
 
 ## 📊 Development Status
 
-**Current Version:** 0.4.5  
-**Status:** Development - Drilling Cycles Functional
+**Current Version:** 0.5.0  
+**Status:** Development - Cycles Complete (Drilling, Tapping, Threading)
 
 ### Completed Phases (✅)
 
@@ -228,11 +229,11 @@ M30
   - Feed rate management
   - Y-axis per turret
 
-- **Phase 4:** Advanced Operations (20% Complete - IN PROGRESS)
+- **Phase 4:** Advanced Operations (40% Complete - IN PROGRESS)
   - ✅ G81-G89 Drilling/tapping/boring cycles
+  - ✅ G76/G92 Threading cycles
   - ⏳ B-axis control (upper turret)
   - ⏳ C-axis positioning
-  - ⏳ Threading (G76, G92)
   - ⏳ Sub-spindle operations
 
 ### Pending Phases (🔄)
@@ -252,19 +253,18 @@ M30
 
 ### Current Limitations
 
-- ❌ No threading support (G76/G92)
 - ❌ No B-axis output (upper turret B not implemented yet)
 - ❌ No C-axis indexing for live tools
 - ❌ No balanced cutting (M562/M563)
 - ❌ No sub-spindle part transfer
 - ❌ Not tested on actual machine yet
 
-### What Works (NEW in v0.4.5)
+### What Works (NEW in v0.5.0)
 
-- ✅ **G81-G89 Drilling cycles** - Standard drilling, peck drilling, tapping, boring
-- ✅ **Multi-point cycles** - Drill patterns with modal cycles
-- ✅ **Automatic cycle parameters** - R (retract), Q (peck), P (dwell)
-- ✅ All previous features from v0.4.0
+- ✅ **G76 Compound Threading** - Multi-pass automatic threading with depth control
+- ✅ **G92 Simple Threading** - Single-pass threading
+- ✅ **Thread parameters** - Pitch, depth, taper, infeed angle, spring passes
+- ✅ All features from v0.4.5 (drilling, tapping, boring)
 
 ### Safety Warnings
 
