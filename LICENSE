@@ -1,0 +1,113 @@
+PROPRIETARY LICENSE
+
+Copyright (c) 2026 Grace Engineering Corp.
+
+NOTICE: This post processor is custom-developed for a specific machine configuration.
+
+Machine: Mazak Integrex 100-IV ST (Model IN1004ST)
+Serial Number: 195369
+Owner: Grace Engineering Corp.
+
+TERMS AND CONDITIONS:
+
+1. GRANT OF LICENSE
+
+   Subject to the terms and conditions of this License, Grace Engineering Corp.
+   grants you a limited, non-exclusive, non-transferable license to use this
+   post processor software ("Software") for the specific machine configuration
+   identified above.
+
+2. RESTRICTIONS
+
+   You may NOT:
+   - Use this Software on machines other than the specified configuration
+     without modification and testing
+   - Redistribute this Software for commercial purposes
+   - Remove or alter any proprietary notices
+   - Claim ownership or authorship of this Software
+   - Hold Grace Engineering Corp. liable for any damages
+
+3. PERMITTED USES
+
+   You MAY:
+   - Use this Software for manufacturing operations
+   - Modify the Software for your specific needs
+   - Share modifications with the community (subject to attribution)
+   - Study the code for educational purposes
+   - Create derivative works (subject to attribution)
+
+4. ATTRIBUTION
+
+   If you create derivative works or modifications, you must:
+   - Credit Grace Engineering Corp. and the original authors
+   - Clearly indicate what changes were made
+   - Provide a link back to the original repository
+   - Include this license file
+
+5. NO WARRANTY
+
+   THIS SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+   IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+   FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT.
+
+   IN NO EVENT SHALL GRACE ENGINEERING CORP. OR THE AUTHORS BE LIABLE FOR ANY
+   CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT
+   OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE
+   USE OR OTHER DEALINGS IN THE SOFTWARE.
+
+6. MACHINE SAFETY
+
+   This Software is under active development. Before using on any machine:
+   
+   - Validate all G-code in a simulator
+   - Perform dry runs without tools or parts
+   - Verify all work offsets and tool offsets
+   - Check spindle speed limits
+   - Verify turret clearances
+   - Use single-block execution for first runs
+   
+   THE USER ASSUMES ALL RESPONSIBILITY FOR MACHINE SAFETY, TOOL BREAKAGE,
+   SCRAP PARTS, AND ANY OTHER DAMAGES RESULTING FROM USE OF THIS SOFTWARE.
+
+7. THIRD-PARTY COMPONENTS
+
+   This Software is based on Autodesk Fusion 360 post processor templates
+   and references Mazak programming documentation. Use of this Software
+   requires a valid Fusion 360 license from Autodesk.
+
+8. MODIFICATIONS
+
+   Grace Engineering Corp. reserves the right to modify these terms at any time.
+   Continued use of the Software constitutes acceptance of any changes.
+
+9. TERMINATION
+
+   This license is effective until terminated. Your rights under this license
+   will terminate automatically without notice if you fail to comply with any
+   of its terms.
+
+10. GOVERNING LAW
+
+   This License shall be governed by the laws of the jurisdiction in which
+   Grace Engineering Corp. operates.
+
+---
+
+DEVELOPED BY:
+- Grace Engineering Corp.
+- Claude AI (Anthropic)
+
+BASED ON:
+- Autodesk Fusion 360 mazak_integrex_i-100s.cps
+- Mazak Matrix Programming Manual
+- Grace Engineering Machine Parameters (Serial 195369)
+
+VERSION: 0.4.0
+DATE: January 6, 2026
+
+For questions or permissions beyond the scope of this license, contact:
+Grace Engineering Corp.
+
+---
+
+END OF LICENSE
