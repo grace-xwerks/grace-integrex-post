@@ -52,18 +52,40 @@
  *     - Arc linearization for complex cases
  *     - Feed rate management (G94/G95)
  *     - Y-axis output per turret (enabled/disabled based on turret)
- * [ ] Phase 4: Advanced Operation Logic (Cycles, Sub-spindle, Threading)
+ * [🔄] Phase 4: Advanced Operation Logic (Cycles, Sub-spindle, Threading)
+ *     - onCycle() implemented (cycle setup)
+ *     - onCyclePoint() implemented (drilling, tapping, boring)
+ *     - onCycleEnd() implemented (G80 cancel)
+ *     - G81 - Drilling cycle
+ *     - G82 - Counter boring (drilling with dwell)
+ *     - G73 - High-speed peck drilling
+ *     - G83 - Peck drilling (full retract)
+ *     - G84/G74 - Tapping (RH/LH)
+ *     - G85 - Boring/Reaming
+ *     - G86 - Boring with spindle stop
+ *     - G88 - Manual boring
+ *     - G89 - Boring with dwell
+ *     - Cycle parameter handling (R, Q, P)
+ *     - [ ] B-axis control (upper turret)
+ *     - [ ] C-axis positioning
+ *     - [ ] Threading cycles (G76, G92)
+ *     - [ ] Sub-spindle operations
  * [ ] Phase 5: Compound Machining (Separate, Parallel, Balanced cutting)
  * [ ] Phase 6: Tool Management (Advanced offsets, turret-specific libraries)
  * [ ] Phase 7: Work Coordinate Systems (Advanced WCS, spindle offsets)
  * [ ] Phase 8: Testing & Validation
  * 
- * Version: 0.4.0 - Phase 3 Complete (Motion Functions)
+ * Version: 0.4.5 - Phase 4 In Progress (Drilling Cycles)
  * Date: January 2026
- * Status: DEVELOPMENT - Basic motion now functional, advanced features pending
+ * Status: DEVELOPMENT - Drilling/tapping cycles functional, B/C-axis pending
  * Author: Grace Engineering / Claude AI
  * 
  * CHANGELOG:
+ * v0.4.5 - Phase 4 Partial: Drilling and tapping cycles implemented
+ *          - onCycle(), onCyclePoint(), onCycleEnd() complete
+ *          - G81-G89 drilling/tapping/boring cycles
+ *          - Cycle parameter handling (R, Q, P)
+ *          - Cycle linearization fallback
  * v0.4.0 - Phase 3 Complete: Motion functions implemented (G0, G1, G2, G3)
  * v0.3.1 - Critical Fix: Added scale:2 to xFormat for diameter mode
  *          This ensures X-axis values are output as diameters (not radius)
@@ -293,7 +315,9 @@ var cFormat = createFormat({prefix:"C", decimals:3, type:FORMAT_REAL, forceDecim
 
 var feedFormat = createFormat({decimals:(unit == MM ? 3 : 4), forceDecimal:true});
 var pitchFormat = createFormat({decimals:(unit == MM ? 3 : 4), forceDecimal:true});
-var rFormat = createFormat({decimals:(unit == MM ? 3 : 4), forceDecimal:true}); // Radius for arcs
+var rFormat = createFormat({decimals:(unit == MM ? 3 : 4), type:FORMAT_REAL, forceDecimal:true}); // Radius for arcs
+var spatialFormat = createFormat({decimals:(unit == MM ? 3 : 4), type:FORMAT_REAL});  // For cycle parameters
+var milliFormat = createFormat({decimals:0});  // Milliseconds for dwell
 var toolFormat = createFormat({decimals:0});
 var rpmFormat = createFormat({decimals:0});
 var secFormat = createFormat({decimals:3, forceDecimal:true});
@@ -319,6 +343,9 @@ var gFeedModeModal = createModal({}, gFormat);
 var gSpindleModeModal = createModal({}, gFormat);
 var gUnitModal = createModal({}, gFormat);
 var gCycleModal = createModal({}, gFormat);
+var gRetractModal = createModal({}, gFormat);
+var gAbsIncModal = createModal({}, gFormat);
+var gRotationModal = createModal({}, gFormat);
 var gPolarModal = createModal({}, gFormat);
 
 // ============================================================================
@@ -357,6 +384,11 @@ var showSequenceNumbers;
 var currentTool;
 var lastSpindleSpeed = 0;
 var lastSpindleDirection;
+
+// Cycle tracking
+var cycleExpanded = false;
+var cycleDirection = new Vector(0, 0, 0);
+var cycleSubprogramIsActive = false;
 
 // Operational state flags
 var optionalSection = false;
@@ -2024,3 +2056,307 @@ function forceABC() {
  * - [ ] Dry run validation
  * - [ ] Documentation
  */
+
+// ============================================================================
+// SECTION 11: CYCLE FUNCTIONS (PHASE 4)
+// ============================================================================
+
+/**
+ * Called when a cycle is being executed
+ * Phase 4: Advanced Operations - Drilling, tapping, boring cycles
+ */
+function onCycle() {
+  if (!getProperty("useCycles")) {
+    // User has disabled canned cycles - will linearize instead
+    return;
+  }
+  
+  // Cycles are handled in onCyclePoint
+  // This function can perform setup if needed
+  
+  writeComment("Cycle: " + cycleType);
+}
+
+/**
+ * Called for each point in a cycle (drilling, tapping, etc.)
+ * Phase 4: Drilling Cycles Implementation
+ */
+function onCyclePoint(x, y, z) {
+  
+  if (!getProperty("useCycles")) {
+    // Linearize the cycle - expand into G0/G1 moves
+    expandCyclePoint(x, y, z);
+    return;
+  }
+  
+  // Set plane before starting cycle
+  if (machineState.isTurning) {
+    writeBlock(gPlaneModal.format(18));  // G18 - ZX plane for turning
+  } else {
+    writeBlock(gPlaneModal.format(17));  // G17 - XY plane for milling
+  }
+  
+  //--------------------------------------------------------------------------
+  // CYCLE INITIALIZATION (first point only)
+  //--------------------------------------------------------------------------
+  if (isFirstCyclePoint()) {
+    
+    // Position to cycle clearance (R plane)
+    repositionToCycleClearance(cycle, x, y, z);
+    
+    // Calculate dwell time in milliseconds (if needed)
+    var P = !cycle.dwell ? 0 : clamp(1, cycle.dwell * 1000, 99999999);
+    
+    //------------------------------------------------------------------------
+    // DRILLING CYCLES
+    //------------------------------------------------------------------------
+    switch (cycleType) {
+    
+    case "drilling":
+      // G81 - Standard drilling cycle
+      writeBlock(
+        gRetractModal.format(98),      // G98 - Return to initial level
+        gAbsIncModal.format(90),        // G90 - Absolute mode
+        gCycleModal.format(81),         // G81 - Drill cycle
+        getCommonCycle(x, y, z, cycle.retract),
+        getFeed(cycle.feedrate)
+      );
+      break;
+      
+    case "counter-boring":
+      // G82 - Counter boring cycle (drilling with dwell)
+      writeBlock(
+        gRetractModal.format(98),
+        gAbsIncModal.format(90),
+        gCycleModal.format(82),         // G82 - Counter bore
+        getCommonCycle(x, y, z, cycle.retract),
+        conditional(P > 0, "P" + milliFormat.format(P)),  // Dwell time
+        getFeed(cycle.feedrate)
+      );
+      break;
+      
+    case "chip-breaking":
+      // G73 - High-speed peck drilling (chip breaking)
+      if (cycle.accumulatedDepth < cycle.depth) {
+        // Not deep enough for chip breaking - linearize
+        expandCyclePoint(x, y, z);
+      } else {
+        writeBlock(
+          gRetractModal.format(98),
+          gAbsIncModal.format(90),
+          gCycleModal.format(73),       // G73 - High-speed peck
+          getCommonCycle(x, y, z, cycle.retract),
+          "Q" + spatialFormat.format(cycle.incrementalDepth),  // Peck depth
+          conditional(P > 0, "P" + milliFormat.format(P)),
+          getFeed(cycle.feedrate)
+        );
+      }
+      break;
+      
+    case "deep-drilling":
+      // G83 - Peck drilling cycle (full retract)
+      if (cycle.incrementalDepthReduction > 0) {
+        // Variable peck not supported - linearize
+        expandCyclePoint(x, y, z);
+        return;
+      }
+      writeBlock(
+        gRetractModal.format(98),
+        gAbsIncModal.format(90),
+        gCycleModal.format(83),         // G83 - Peck drill
+        getCommonCycle(x, y, z, cycle.retract),
+        "Q" + spatialFormat.format(cycle.incrementalDepth),  // Peck depth
+        conditional(P > 0, "P" + milliFormat.format(P)),
+        getFeed(cycle.feedrate)
+      );
+      break;
+      
+    //------------------------------------------------------------------------
+    // TAPPING CYCLES
+    //------------------------------------------------------------------------
+    case "tapping":
+    case "right-tapping":
+      // G84 (RH) or G74 (LH) - Tapping cycle
+      var tapCode = (tool.type == TOOL_TAP_LEFT_HAND) ? 74 : 84;
+      writeBlock(
+        gRetractModal.format(98),
+        gAbsIncModal.format(90),
+        gCycleModal.format(tapCode),    // G84 RH or G74 LH
+        getCommonCycle(x, y, z, cycle.retract),
+        getFeed(cycle.feedrate)
+      );
+      forceFeed();
+      break;
+      
+    case "left-tapping":
+      // G74 - Left-hand tapping
+      writeBlock(
+        gRetractModal.format(98),
+        gAbsIncModal.format(90),
+        gCycleModal.format(74),         // G74 - LH tap
+        getCommonCycle(x, y, z, cycle.retract),
+        getFeed(cycle.feedrate)
+      );
+      forceFeed();
+      break;
+      
+    case "tapping-with-chip-breaking":
+      // Rigid tapping with chip breaking
+      writeBlock(
+        gRetractModal.format(98),
+        gAbsIncModal.format(90),
+        gCycleModal.format(84),
+        getCommonCycle(x, y, z, cycle.retract),
+        "Q" + spatialFormat.format(cycle.incrementalDepth),
+        getFeed(cycle.feedrate)
+      );
+      forceFeed();
+      break;
+      
+    //------------------------------------------------------------------------
+    // BORING CYCLES
+    //------------------------------------------------------------------------
+    case "boring":
+      // G85 - Boring cycle (feed in and out)
+      writeBlock(
+        gRetractModal.format(98),
+        gAbsIncModal.format(90),
+        gCycleModal.format(85),         // G85 - Bore
+        getCommonCycle(x, y, z, cycle.retract),
+        getFeed(cycle.feedrate)
+      );
+      break;
+      
+    case "reaming":
+      // G85 - Reaming (same as boring)
+      writeBlock(
+        gRetractModal.format(98),
+        gAbsIncModal.format(90),
+        gCycleModal.format(85),
+        getCommonCycle(x, y, z, cycle.retract),
+        getFeed(cycle.feedrate)
+      );
+      break;
+      
+    case "stop-boring":
+      // G86 - Boring with spindle stop and rapid retract
+      writeBlock(
+        gRetractModal.format(98),
+        gAbsIncModal.format(90),
+        gCycleModal.format(86),         // G86 - Bore with stop
+        getCommonCycle(x, y, z, cycle.retract),
+        conditional(P > 0, "P" + milliFormat.format(P)),
+        getFeed(cycle.feedrate)
+      );
+      break;
+      
+    case "manual-boring":
+      // G88 - Boring with manual retract
+      writeBlock(
+        gRetractModal.format(98),
+        gAbsIncModal.format(90),
+        gCycleModal.format(88),         // G88 - Manual bore
+        getCommonCycle(x, y, z, cycle.retract),
+        conditional(P > 0, "P" + milliFormat.format(P)),
+        getFeed(cycle.feedrate)
+      );
+      break;
+      
+    case "boring-with-stop-dwell":
+      // G89 - Boring with dwell
+      writeBlock(
+        gRetractModal.format(98),
+        gAbsIncModal.format(90),
+        gCycleModal.format(89),         // G89 - Bore with dwell
+        getCommonCycle(x, y, z, cycle.retract),
+        conditional(P > 0, "P" + milliFormat.format(P)),
+        getFeed(cycle.feedrate)
+      );
+      break;
+      
+    //------------------------------------------------------------------------
+    // UNSUPPORTED CYCLES
+    //------------------------------------------------------------------------
+    default:
+      // Cycle not supported - linearize into basic moves
+      expandCyclePoint(x, y, z);
+    }
+    
+  } else {
+    // NOT FIRST POINT - just output coordinates
+    // Cycle is modal, so we only need X Y (Z for some cycles)
+    if (cycleExpanded) {
+      expandCyclePoint(x, y, z);
+    } else {
+      var _x = xOutput.format(x);
+      var _y = yOutput.format(y);
+      if (_x || _y) {
+        writeBlock(_x, _y);
+      }
+    }
+  }
+}
+
+/**
+ * Called at the end of a cycle
+ * Phase 4: Cancel the active cycle
+ */
+function onCycleEnd() {
+  if (!cycleExpanded) {
+    writeBlock(gCycleModal.format(80));  // G80 - Cancel cycle
+    gMotionModal.reset();
+  }
+}
+
+/**
+ * Helper function to position to cycle clearance plane
+ */
+function repositionToCycleClearance(cycle, x, y, z) {
+  // Position to R plane (clearance height) before starting cycle
+  writeBlock(gMotionModal.format(0), xOutput.format(x), yOutput.format(y));
+  writeBlock(gMotionModal.format(0), zOutput.format(cycle.clearance));
+}
+
+/**
+ * Helper function to get common cycle parameters
+ */
+function getCommonCycle(x, y, z, r) {
+  // Build common cycle parameters: X Y Z R
+  forceXYZ();
+  return [
+    xOutput.format(x),
+    yOutput.format(y),
+    zOutput.format(z),
+    "R" + spatialFormat.format(r)
+  ];
+}
+
+/**
+ * Helper function for clamp
+ */
+function clamp(min, value, max) {
+  return Math.max(min, Math.min(value, max));
+}
+
+/**
+ * Helper function to check if this is the first cycle point
+ */
+function isFirstCyclePoint() {
+  return cycleSubprogramIsActive ? false : (getCurrentPosition().x == 0 && getCurrentPosition().y == 0 && getCurrentPosition().z == 0) || !isSameDirection(getCurrentDirection(), cycleDirection) || isProbeOperation();
+}
+
+/**
+ * Helper function to check current direction
+ */
+function getCurrentDirection() {
+  // Returns current tool axis direction
+  return currentSection.workPlane.forward;
+}
+
+/**
+ * Helper function to check if operation is probing
+ */
+function isProbeOperation() {
+  return currentSection.hasParameter("operation-strategy") && 
+         (currentSection.getParameter("operation-strategy") == "probe");
+}
