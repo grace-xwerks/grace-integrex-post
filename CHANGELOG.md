@@ -10,7 +10,6 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ## [Unreleased]
 
 ### To Be Added
-- Drilling cycles (G83, G73, G74, G76, G81, G82, G83, G84, G85, G86, G87, G88, G89)
 - Threading cycles (G76, G92)
 - B-axis output for upper turret positioning
 - C-axis positioning for live tool orientation
@@ -20,6 +19,70 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - P-code waiting (P1-P99999999)
 - Advanced tool life management
 - Extended work offsets (G54.1)
+
+---
+
+## [0.4.5] - 2026-01-06
+
+### Added - Phase 4: Drilling & Tapping Cycles (Partial)
+- **onCycle()** function for cycle initialization
+- **onCyclePoint()** function for drilling/tapping/boring operations
+- **onCycleEnd()** function for cycle cancellation
+- **G81** - Standard drilling cycle
+- **G82** - Counter boring cycle (drilling with dwell)
+- **G73** - High-speed peck drilling (chip breaking)
+- **G83** - Peck drilling cycle (full retract)
+- **G84/G74** - Tapping cycles (RH/LH)
+- **G85** - Boring/reaming cycle
+- **G86** - Boring with spindle stop and rapid retract
+- **G88** - Manual boring cycle
+- **G89** - Boring with dwell
+- **repositionToCycleClearance()** helper for cycle positioning
+- **getCommonCycle()** helper for cycle parameter formatting
+- **clamp()** helper for value limiting
+- **isFirstCyclePoint()** helper for multi-point cycles
+- **getCurrentDirection()** helper for tool orientation
+- **isProbeOperation()** helper for probe detection
+
+### Added - Format Definitions
+- **spatialFormat** - For cycle parameters (Q, R, P)
+- **milliFormat** - For dwell times in milliseconds
+
+### Added - Modal Groups
+- **gRetractModal** - G98/G99 retract mode
+- **gAbsIncModal** - G90/G91 absolute/incremental
+- **gRotationModal** - For coordinate rotation
+
+### Added - Cycle Tracking
+- **cycleExpanded** - Track if cycle is linearized
+- **cycleDirection** - Track cycle direction
+- **cycleSubprogramIsActive** - Track subprogram state
+
+### Changed
+- Drilling operations now use canned cycles instead of linearization
+- Tapping operations properly handle RH/LH orientation
+- Boring cycles with proper spindle control
+
+### Technical Notes
+- Cycle parameters: R (retract), Q (peck depth), P (dwell ms)
+- Multi-point cycles supported (drill patterns)
+- Automatic cycle linearization fallback for unsupported cycles
+- Plane selection automatic (G17/G18/G19)
+
+### File Statistics
+- **Lines of Code:** 2,362 (+336 from v0.4.0)
+- **Functions Added:** 9
+- **New Formats:** 2
+- **New Modal Groups:** 3
+- **Drilling Cycles:** 10 types implemented
+
+### Phase 4 Status
+- Drilling/Tapping/Boring: ✅ Complete (100%)
+- B-Axis Control: ⏳ Pending (0%)
+- C-Axis Control: ⏳ Pending (0%)
+- Threading: ⏳ Pending (0%)
+- Sub-Spindle: ⏳ Pending (0%)
+- **Overall Phase 4:** 🔄 20% Complete
 
 ---
 

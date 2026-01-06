@@ -1,8 +1,9 @@
 # Grace Engineering - Mazak Integrex 100-IV ST Dual Turret Post Processor
 
 [![License](https://img.shields.io/badge/License-Proprietary-red.svg)](LICENSE)
-[![Version](https://img.shields.io/badge/Version-0.4.0-blue.svg)](CHANGELOG.md)
+[![Version](https://img.shields.io/badge/Version-0.4.5-blue.svg)](CHANGELOG.md)
 [![Status](https://img.shields.io/badge/Status-Development-yellow.svg)](DEVELOPMENT_STATUS.md)
+[![Phase](https://img.shields.io/badge/Phase-4%20(20%25)-orange.svg)](DEVELOPMENT_STATUS.md)
 
 A custom Autodesk Fusion 360 post processor for the Mazak Integrex 100-IV ST dual turret mill-turn machine with Matrix (Nexus) control.
 
@@ -23,10 +24,13 @@ This post processor is specifically designed for:
 - ✅ Dual turret support with G109 L1/L2 turret selection
 - ✅ Matrix control M-codes (M901/M902, M200/M300, M950, M562/M563)
 - ✅ Y-axis on both upper and lower turrets (±105mm travel)
-- ✅ B-axis on upper turret (0-90°, programmable)
+- ✅ B-axis on upper turret (0-90°, programmable) - *output pending*
 - ✅ Sub-spindle support
 - ✅ Diameter mode for turning operations
 - ✅ Complete motion control (G0, G1, G2, G3)
+- ✅ **Drilling cycles (G81-G89)** - NEW in v0.4.5!
+- ✅ **Tapping cycles (G74/G84)** - NEW in v0.4.5!
+- ✅ **Boring cycles (G85-G89)** - NEW in v0.4.5!
 - ✅ Milling and turning operations
 - ✅ Work offset management (G54-G59)
 - ✅ Spindle speed limiting per spindle type
@@ -146,23 +150,38 @@ This post processor is specifically designed for:
 G21 G18 G90 G94 G49 G54
 
 (======================================)
-(UPPER TURRET - MAIN SPINDLE TURNING)
+(UPPER TURRET - MILLING WITH DRILLING)
 (======================================)
 G109 L1
 M901
-M202
+M200
+M203 S5000
 T0101
-M3 S1200
-G0 X52.0 Z5.0
-G1 Z-25.0 F0.25
-X50.0
-G0 X100.0 Z50.0
-M9 M5
+G54
+M8
+
+(Contour milling)
+G17
+G0 X25.0 Y0.0 Z5.0
+G1 Z-5.0 F500
+G3 X25.0 Y0.0 I-25.0 J0.0 F800
+
+(Drilling pattern - NEW!)
+G0 X30.0 Y10.0
+G98 G90 G83 X30.0 Y10.0 Z-20.0 R5.0 Q5.0 F100
+X40.0 Y10.0
+X50.0 Y10.0
+G80
+
+G0 Z50.0
+M205
+M202
+M9
 M950
 M30
 
 (======================================)
-(LOWER TURRET - MAIN SPINDLE TURNING)
+(LOWER TURRET - TURNING)
 (======================================)
 G109 L2
 M901
@@ -185,8 +204,8 @@ M30
 
 ## 📊 Development Status
 
-**Current Version:** 0.4.0  
-**Status:** Development - Not Production Ready
+**Current Version:** 0.4.5  
+**Status:** Development - Drilling Cycles Functional
 
 ### Completed Phases (✅)
 
@@ -209,14 +228,14 @@ M30
   - Feed rate management
   - Y-axis per turret
 
-### Pending Phases (🔄)
+- **Phase 4:** Advanced Operations (20% Complete - IN PROGRESS)
+  - ✅ G81-G89 Drilling/tapping/boring cycles
+  - ⏳ B-axis control (upper turret)
+  - ⏳ C-axis positioning
+  - ⏳ Threading (G76, G92)
+  - ⏳ Sub-spindle operations
 
-- **Phase 4:** Advanced Operations
-  - Drilling cycles (G83, G73, etc.)
-  - Threading (G76, G92)
-  - B-axis output
-  - C-axis positioning
-  - Sub-spindle operations
+### Pending Phases (🔄)
 
 - **Phase 5:** Compound Machining
   - Balanced cutting (M562/M563)
@@ -233,13 +252,19 @@ M30
 
 ### Current Limitations
 
-- ❌ No drilling/tapping cycles (will linearize)
-- ❌ No threading support
-- ❌ No B-axis output (upper turret B not implemented)
+- ❌ No threading support (G76/G92)
+- ❌ No B-axis output (upper turret B not implemented yet)
 - ❌ No C-axis indexing for live tools
 - ❌ No balanced cutting (M562/M563)
 - ❌ No sub-spindle part transfer
 - ❌ Not tested on actual machine yet
+
+### What Works (NEW in v0.4.5)
+
+- ✅ **G81-G89 Drilling cycles** - Standard drilling, peck drilling, tapping, boring
+- ✅ **Multi-point cycles** - Drill patterns with modal cycles
+- ✅ **Automatic cycle parameters** - R (retract), Q (peck), P (dwell)
+- ✅ All previous features from v0.4.0
 
 ### Safety Warnings
 
@@ -380,7 +405,8 @@ This post processor is custom-developed for Grace Engineering's specific machine
 
 ### Q1 2026
 - ✅ Phase 1-3 completion
-- 🔄 Phase 4: Advanced operations
+- ✅ Phase 4 started: Drilling cycles
+- 🔄 Phase 4 continuation: B-axis, threading
 - 🔄 Simulator testing
 
 ### Q2 2026
@@ -396,7 +422,7 @@ This post processor is custom-developed for Grace Engineering's specific machine
 ---
 
 **Last Updated:** January 2026  
-**Current Version:** 0.4.0  
+**Current Version:** 0.4.5  
 **Status:** Active Development
 
 ---
