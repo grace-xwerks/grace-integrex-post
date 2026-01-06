@@ -40,7 +40,7 @@ grace_integrex_post_release/
 **`grace_integrex_100iv_dual_turret.cps`** (2,026 lines)
 - Main post processor file
 - Current version: v0.4.0
-- Ready to install in Fusion 360
+- Ready to install in Autodesk Fusion
 - Fully commented with machine specifications
 
 **`README.md`**
@@ -152,7 +152,7 @@ grace_integrex_post_release/
 
 1. **Read:** README.md
 2. **Install:** Follow installation section
-3. **Configure:** Set properties in Fusion 360
+3. **Configure:** Set properties in Autodesk Fusion
 4. **Test:** Generate simple program
 5. **Validate:** Check output in simulator
 
@@ -234,7 +234,7 @@ grace_integrex_post_release/
    ```bash
    # On GitHub: Create new repository
    # Name: grace-integrex-post
-   # Description: Fusion 360 post processor for Mazak Integrex 100-IV ST
+   # Description: Autodesk Fusion post processor for Mazak Integrex 100-IV ST
    # Public or Private (your choice)
    ```
 
@@ -270,7 +270,7 @@ grace_integrex_post_release/
 ### Repository Settings
 
 **About Section:**
-- Description: "Fusion 360 post processor for Mazak Integrex 100-IV ST dual turret mill-turn"
+- Description: "Autodesk Fusion post processor for Mazak Integrex 100-IV ST dual turret mill-turn"
 - Website: Link to documentation
 - Topics: fusion360, mazak, postprocessor, mill-turn, cnc, manufacturing
 
@@ -321,7 +321,7 @@ All documentation needed to:
 
 **Recommended Reading:**
 1. Mazak Programming Manual (included in project)
-2. Fusion 360 CAM documentation
+2. Autodesk Fusion CAM documentation
 3. Post processor development guide
 4. G-code programming reference
 
@@ -358,7 +358,7 @@ All documentation needed to:
 1. Download new release zip
 2. Extract to temporary location
 3. Backup current .cps file
-4. Copy new .cps to Fusion 360
+4. Copy new .cps to Autodesk Fusion
 5. Test with simple program
 6. Review CHANGELOG for breaking changes
 

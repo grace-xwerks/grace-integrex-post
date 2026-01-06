@@ -173,7 +173,7 @@ M30
 
 ### Complete Threading Operations
 
-**From Fusion 360:**
+**From Autodesk Fusion:**
 1. Create threading operation
 2. Set thread type (internal/external)
 3. Set pitch (e.g., 1.5mm)
@@ -298,7 +298,7 @@ Thread Depth (radial) = 0.6134 / TPI
 1/2-13: Depth = 0.6134 / 13 = 0.047" radial
 ```
 
-**Fusion 360 Calculates Automatically!**
+**Autodesk Fusion Calculates Automatically!**
 
 ### Thread Pitch vs. Lead
 

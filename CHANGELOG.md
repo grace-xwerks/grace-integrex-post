@@ -64,7 +64,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - Thread depth is radial (not diameter) as per Mazak specification
 - Taper positive if taper goes down (increasing diameter toward end)
 - First pass depth and minimum depth of cut auto-calculated
-- Compatible with Fusion 360 threading operations
+- Compatible with Autodesk Fusion threading operations
 
 ### File Statistics
 - **Lines of Code:** 2,529 (+167 from v0.4.5)

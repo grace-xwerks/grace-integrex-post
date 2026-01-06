@@ -5,7 +5,7 @@
 [![Status](https://img.shields.io/badge/Status-Development-yellow.svg)](DEVELOPMENT_STATUS.md)
 [![Phase](https://img.shields.io/badge/Phase-4%20(40%25)-orange.svg)](DEVELOPMENT_STATUS.md)
 
-A custom Autodesk Fusion 360 post processor for the Mazak Integrex 100-IV ST dual turret mill-turn machine with Matrix (Nexus) control.
+A custom Autodesk Autodesk Fusion post processor for the Mazak Integrex 100-IV ST dual turret mill-turn machine with Matrix (Nexus) control.
 
 ---
 
@@ -71,8 +71,8 @@ This post processor is specifically designed for:
 
 ### Prerequisites
 
-- Autodesk Fusion 360 (2020 or newer recommended)
-- Access to Fusion 360 CAM workspace
+- Autodesk Fusion
+- Access to CAM workspace
 - Basic understanding of mill-turn programming
 
 ### Installation Steps
@@ -83,7 +83,7 @@ This post processor is specifically designed for:
    cd grace-integrex-post
    ```
 
-2. **Copy to Fusion 360 Post Library:**
+2. **Copy to Autodesk Fusion Post Library:**
    
    **Windows:**
    ```
@@ -97,7 +97,7 @@ This post processor is specifically designed for:
    ~/Library/Application Support/Autodesk/webdeploy/production/<version>/Fusion360.app/Contents/Libraries/Applications/CAM/cache/posts/
    ```
 
-3. **Select in Fusion 360:**
+3. **Select in Autodesk Fusion:**
    - Open CAM workspace
    - Right-click on Setup → Post Process
    - Click "Select" next to "Post Configuration"
@@ -110,7 +110,7 @@ This post processor is specifically designed for:
 
 ### Basic Workflow
 
-1. **Setup Your Part in Fusion 360**
+1. **Setup Your Part in Autodesk Fusion**
    - Create manufacturing setup for mill-turn
    - Assign operations to correct turret (1=Upper, 2=Lower)
    - Set spindle (Primary=Main, Secondary=Sub)
@@ -366,13 +366,13 @@ This post processor is custom-developed for Grace Engineering's specific machine
 - Claude AI (Anthropic)
 
 **Based On:**
-- Autodesk Fusion 360 `mazak_integrex_i-100s.cps` reference post
+- Autodesk Fusion `mazak_integrex_i-100s.cps` reference post
 - Mazak Matrix programming manual specifications
 - Grace Engineering machine parameters (Serial 195369)
 
 **Special Thanks:**
 - Mazak for programming documentation
-- Autodesk for Fusion 360 CAM platform
+- Autodesk for Fusion CAM platform
 - Mill-turn programming community
 
 ---
@@ -381,7 +381,7 @@ This post processor is custom-developed for Grace Engineering's specific machine
 
 **For Issues:**
 - Open an issue on GitHub
-- Include Fusion 360 version
+- Include Autodesk Fusion version
 - Attach generated G-code sample
 - Describe expected vs actual behavior
 
@@ -396,7 +396,7 @@ This post processor is custom-developed for Grace Engineering's specific machine
 
 - [Mazak Programming Manual](docs/Programming_Manual_2.pdf)
 - [Autodesk Post Processor Training](https://cam.autodesk.com/posts/)
-- [Fusion 360 CAM Documentation](https://help.autodesk.com/view/fusion360/ENU/)
+- [Autodesk Fusion CAM Documentation](https://help.autodesk.com/view/fusion360/ENU/)
 - [Matrix Control Documentation](https://www.mazak.com)
 
 ---

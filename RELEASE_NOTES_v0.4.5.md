@@ -114,7 +114,7 @@ G84 X25.0 Y15.0 Z-20.0 R5.0 F120  (RH tap)
 G74 X30.0 Y15.0 Z-20.0 R5.0 F120  (LH tap)
 ```
 
-**Automatic feed rate** = Pitch × RPM (handled by Fusion 360)
+**Automatic feed rate** = Pitch × RPM (handled by Autodesk Fusion)
 
 ---
 
@@ -444,7 +444,7 @@ var gRotationModal = createModal({}, gFormat); // G68/G69
 
 **For Issues:**
 - Open an issue on GitHub
-- Include Fusion 360 version
+- Include Autodesk Fusion version
 - Attach G-code sample
 - Specify which cycle type
 

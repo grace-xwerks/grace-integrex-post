@@ -19,7 +19,7 @@ This is a specialized post processor for:
 
 1. **Search existing issues** to avoid duplicates
 2. **Provide complete information:**
-   - Fusion 360 version
+   - Autodesk Fusion version
    - Post processor version
    - Generated G-code sample
    - Expected behavior
@@ -29,7 +29,7 @@ This is a specialized post processor for:
 3. **Use the issue template:**
    ```markdown
    **Version:** v0.4.0
-   **Fusion 360:** 2.0.XXXX
+   **Autodesk Fusion:** 2.0.XXXX
    **Operation Type:** Turning / Milling / Both
    
    **Description:**
@@ -131,7 +131,7 @@ Fixes #456
 
 docs(readme): Update installation instructions
 
-Added macOS installation path and Fusion 360 version
+Added macOS installation path and Autodesk Fusion version
 requirements.
 ```
 
@@ -142,7 +142,7 @@ requirements.
 ### Before Submitting
 
 1. **Syntax Check**
-   - Load post in Fusion 360
+   - Load post in Autodesk Fusion
    - Generate test program
    - Check for errors
 
@@ -218,7 +218,7 @@ git push origin feature/my-improvement
 - [ ] Documentation update
 
 ## Testing
-- [x] Loaded in Fusion 360 without errors
+- [x] Loaded in Autodesk Fusion without errors
 - [x] Generated test program successfully
 - [ ] Tested in simulator
 - [ ] Dry run on machine
@@ -274,7 +274,7 @@ Closes #123
 
 ### Helpful Links
 
-- [Fusion 360 CAM Documentation](https://help.autodesk.com/view/fusion360/ENU/)
+- [Autodesk Fusion CAM Documentation](https://help.autodesk.com/view/fusion360/ENU/)
 - [G-Code Reference](https://www.mazak.com)
 - [Mill-Turn Programming Guide](https://www.mazak.com)
 
@@ -335,7 +335,7 @@ Pull requests will be reviewed for:
    - Documentation updated
 
 4. **Compatibility**
-   - Fusion 360 compatible
+   - Autodesk Fusion compatible
    - Machine compatible
    - No breaking changes
 

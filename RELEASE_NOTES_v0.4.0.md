@@ -146,7 +146,7 @@ G3 X25.0 Y0.0 I-25.0 J0.0 F800  ← Full circle
    cd grace_integrex_post_release
    ```
 
-2. **Copy to Fusion 360**
+2. **Copy to Autodesk Fusion**
    
    **Windows:**
    ```
@@ -158,7 +158,7 @@ G3 X25.0 Y0.0 I-25.0 J0.0 F800  ← Full circle
    ~/Library/Application Support/Autodesk/webdeploy/production/<version>/Fusion360.app/Contents/Libraries/Applications/CAM/cache/posts/
    ```
 
-3. **Select in Fusion 360**
+3. **Select in Autodesk Fusion**
    - CAM workspace → Post Process
    - Select "grace_integrex_100iv_dual_turret"
    - Configure properties
@@ -291,13 +291,13 @@ No bugs currently reported for v0.4.0.
 - Claude AI (Anthropic)
 
 **Based On:**
-- Autodesk Fusion 360 `mazak_integrex_i-100s.cps`
+- Autodesk Fusion `mazak_integrex_i-100s.cps`
 - Mazak Matrix Programming Manual
 - Grace Engineering Machine Parameters (Serial 195369)
 
 **Special Thanks:**
 - Mazak for comprehensive programming documentation
-- Autodesk for Fusion 360 CAM platform
+- Autodesk for Autodesk Fusion CAM platform
 - Mill-turn programming community
 
 ---
@@ -315,7 +315,7 @@ No bugs currently reported for v0.4.0.
 
 **For Issues:**
 - Open an issue on GitHub
-- Include Fusion 360 version
+- Include Autodesk Fusion version
 - Attach G-code sample
 - Describe expected vs actual
 

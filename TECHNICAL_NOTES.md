@@ -23,7 +23,7 @@ This post processor is a **standalone, single-file implementation** containing a
 
 ### 1. Diameter Mode (CRITICAL)
 
-**Problem:** Turning machines use diameter programming (X50.0 = 50mm diameter), but Fusion 360 uses radius values internally (25mm from center).
+**Problem:** Turning machines use diameter programming (X50.0 = 50mm diameter), but Autodesk Fusion uses radius values internally (25mm from center).
 
 **Solution:**
 ```javascript
@@ -150,7 +150,7 @@ function activateMachine(section) {
 **Result:**
 - Y-axis output automatically suppressed when turret doesn't have it
 - B-axis output automatically suppressed for lower turret
-- No manual intervention needed in Fusion 360
+- No manual intervention needed in Autodesk Fusion
 
 ---
 
@@ -449,7 +449,7 @@ M16 Y = 56977 (0.1μm)     // Y-axis reference point
 ### Phase-Based Testing
 
 **Each phase includes:**
-1. Syntax validation (Fusion 360 load)
+1. Syntax validation (Autodesk Fusion load)
 2. G-code generation test
 3. Simulator validation (if available)
 4. Documentation update

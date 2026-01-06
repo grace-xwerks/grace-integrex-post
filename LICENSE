@@ -71,9 +71,9 @@ TERMS AND CONDITIONS:
 
 7. THIRD-PARTY COMPONENTS
 
-   This Software is based on Autodesk Fusion 360 post processor templates
+   This Software is based on Autodesk Fusion post processor templates
    and references Mazak programming documentation. Use of this Software
-   requires a valid Fusion 360 license from Autodesk.
+   requires a valid Autodesk Fusion license from Autodesk.
 
 8. MODIFICATIONS
 
@@ -98,7 +98,7 @@ DEVELOPED BY:
 - Claude AI (Anthropic)
 
 BASED ON:
-- Autodesk Fusion 360 mazak_integrex_i-100s.cps
+- Autodesk Fusion mazak_integrex_i-100s.cps
 - Mazak Matrix Programming Manual
 - Grace Engineering Machine Parameters (Serial 195369)
 

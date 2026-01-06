@@ -147,7 +147,7 @@ highFeedrate = (unit == IN) ? 400 : 5000;
 // ============================================================================
 // SECTION 2: USER-CONFIGURABLE PROPERTIES
 // ============================================================================
-// These properties appear in the Fusion 360 post processor dialog
+// These properties appear in the Autodesk Fusion post processor dialog
 
 properties = {
   //--------------------------------------------------------------------------
@@ -791,7 +791,7 @@ function defineMachine() {
 // ============================================================================
 /**
  * Activates the appropriate turret and configures axes based on the current
- * operation/section. This function is called for each operation in Fusion 360.
+ * operation/section. This function is called for each operation in Autodesk Fusion.
  * 
  * @param {object} section - Current operation section from Fusion
  * @returns {number} - Active turret number (1 or 2)
@@ -810,7 +810,7 @@ function activateMachine(section) {
   var turret = 1;  // Default to upper turret
   
   if (gotMultiTurret) {
-    // Get turret assignment from Fusion 360 tool definition
+    // Get turret assignment from Autodesk Fusion tool definition
     turret = section.getTool().turret;
     
     // Handle unspecified turret (should not happen with proper setup)
@@ -1125,7 +1125,7 @@ function getPreviousSection() {
 // ============================================================================
 // SECTION 10: MAIN POST PROCESSOR FUNCTIONS (STUBS - TO BE IMPLEMENTED)
 // ============================================================================
-// These functions are called by Fusion 360 at specific points during post
+// These functions are called by Autodesk Fusion at specific points during post
 // processing. Phase 2 has implemented onSection and onSectionEnd.
 // Remaining functions will be implemented in Phase 3 and 4.
 
