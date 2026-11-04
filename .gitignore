@@ -68,3 +68,8 @@ ENV/
 *_CONFIDENTIAL*
 *_PROPRIETARY*
 machine_data/
+
+# Claude Code: track shared project settings; keep per-machine overrides
+# and agent worktrees out.
+.claude/settings.local.json
+.claude/worktrees/
