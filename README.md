@@ -8,8 +8,7 @@
 
 [![License](https://img.shields.io/badge/License-Proprietary-red.svg)](LICENSE)
 [![Version](https://img.shields.io/badge/Version-0.5.0-blue.svg)](CHANGELOG.md)
-[![Status](https://img.shields.io/badge/Status-Development-yellow.svg)](DEVELOPMENT_STATUS.md)
-[![Phase](https://img.shields.io/badge/Phase-4%20(40%25)-orange.svg)](DEVELOPMENT_STATUS.md)
+[![Status](https://img.shields.io/badge/Status-Retired-red.svg)](DEVELOPMENT_STATUS.md)
 
 A custom Autodesk Autodesk Fusion post processor for the Mazak Integrex 100-IV ST dual turret mill-turn machine with Matrix (Nexus) control.
 
