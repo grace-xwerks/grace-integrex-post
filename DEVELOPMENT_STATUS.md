@@ -1,5 +1,6 @@
 # Development Status
 
+**RETIRED 2026-11-17** - superseded by [grace-cam posts/mazak_integrex_100iv_st](https://github.com/grace-xwerks/grace-cam/tree/master/posts/mazak_integrex_100iv_st).  
 **Last Updated:** January 6, 2026  
 **Current Version:** 0.4.0  
 **Overall Progress:** 37.5% (3 of 8 phases complete)

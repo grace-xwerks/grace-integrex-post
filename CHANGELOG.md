@@ -7,6 +7,16 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ---
 
+## [Retired] - 2026-11-17
+
+### Retired
+- Post processor `grace_integrex_100iv_dual_turret.cps` is retired and must not be used on the 878
+- Reason: machine 878 runs G-code series T; this post writes series M with i-series M-codes (alarm 808 or wrong behavior), and it cannot post as written (undeclared names, `getSection` override). Audited 2026-09-23
+- Replacement: https://github.com/grace-xwerks/grace-cam/tree/master/posts/mazak_integrex_100iv_st
+- No code changes; docs only
+
+---
+
 ## [Unreleased]
 
 ### To Be Added
