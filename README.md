@@ -1,9 +1,14 @@
+> **RETIRED - DO NOT USE** (2026-11-17)
+>
+> `grace_integrex_100iv_dual_turret.cps` is retired. The target machine (Mazak Integrex 100-IV ST, machine 878) runs G-code series T, but this post writes series M (G90/G94/G95 header, G81-G89 cycles, G53/G54) with i-series M-codes, so on the 878 its output either alarms (808) or does something different (G73, G74, G94). It also cannot post as written (undeclared names, overridden `getSection`). Audited 2026-09-23.
+>
+> **Replacement:** [grace-cam / posts/mazak_integrex_100iv_st](https://github.com/grace-xwerks/grace-cam/tree/master/posts/mazak_integrex_100iv_st) (Fusion machine "878 - Mazak Integrex 100-IV ST").
+
 # Grace Engineering - Mazak Integrex 100-IV ST Dual Turret Post Processor
 
 [![License](https://img.shields.io/badge/License-Proprietary-red.svg)](LICENSE)
 [![Version](https://img.shields.io/badge/Version-0.5.0-blue.svg)](CHANGELOG.md)
-[![Status](https://img.shields.io/badge/Status-Development-yellow.svg)](DEVELOPMENT_STATUS.md)
-[![Phase](https://img.shields.io/badge/Phase-4%20(40%25)-orange.svg)](DEVELOPMENT_STATUS.md)
+[![Status](https://img.shields.io/badge/Status-Retired-red.svg)](DEVELOPMENT_STATUS.md)
 
 A custom Autodesk Autodesk Fusion post processor for the Mazak Integrex 100-IV ST dual turret mill-turn machine with Matrix (Nexus) control.
 
